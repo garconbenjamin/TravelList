@@ -1,6 +1,8 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import * as R from "ramda";
-
+import { Provider } from "./context";
+import TravelInfo from "./pages/TravelInfo";
+import { Router, Route, Link } from "wouter";
 const categories = [
   { id: 11, name: "養生溫泉", active: false },
   { id: 12, name: "單車遊蹤", active: false },
@@ -16,40 +18,77 @@ const categories = [
   { id: 24, name: "主題商街", active: false },
   { id: 25, name: "無障礙旅遊推薦景點", active: false }
 ];
-const content = [];
-const initState = { currentPage: 1, totalPage: 1, categories, content };
+
+const initState = { currentPage: 1, totalPage: 0, likedSpot: [], categories };
 const todoReducer = (state, action) => {
-  const { page, categories, content } = state;
+  const { currentPage, totalPage, categories, likedSpot } = state;
   switch (action.type) {
-    case "LOAD_MORE":
-      let newKey = 1;
-      if (state.list.length !== 0) {
-        newKey = state.list[state.list.length - 1].listKey + 1;
-      }
-      return {
-        ...state,
-        list: [...state.list, { listKey: newKey, name: action.payload.name }]
-      };
+    case "ADD_LIKE":
+      const newItem = action.payload;
+      return { ...state, likedSpot: [...likedSpot, newItem] };
+    case "NEXT_PAGE":
+      const newPage = currentPage + 1;
+      return { ...state, currentPage: newPage };
     default:
       return state;
   }
 };
+
 const App = () => {
   const [state, dispatch] = useReducer(todoReducer, initState);
-  const fetchData = async ({ cat = "", page = 1, lang = "zh-tw" }) => {
-    const res = await fetch(
-      `https://www.travel.taipei/open-api/${lang}/Attractions/All?${
-        page ? `page=${page}` : ""
-      }`
-    );
-  };
-  useEffect(async () => {
-    const res = await fetch(
-      "https://www.travel.taipei/open-api/zh-tw/Attractions/All?page=1"
-    );
-    const jsonObj = await res.json();
-  }, []);
-  return <h1>hello</h1>;
+  const { totalPage, currentPage, categories } = state;
+  const [content, setContent] = useState([]);
+  const globalState = { state, dispatch, content };
+  useEffect(() => {
+    let ignore = false;
+    const fetchData = async () => {
+      const result = await fetch(
+        `https://www.travel.taipei/open-api/zh-tw/Attractions/All?page=${currentPage}`,
+        {
+          headers: {
+            accept: "application/json"
+          }
+        }
+      );
+      const jsonObj = await result.json();
+      const { data } = jsonObj;
+      // console.log("data", data);
+      if (!ignore) {
+        setContent([...content, ...data]);
+      }
+    };
+    if (currentPage > totalPage) {
+      fetchData();
+    }
+
+    return () => {
+      ignore = true;
+    };
+  }, [currentPage]);
+
+  return (
+    <Provider value={globalState}>
+      <Router>
+        <Route path="/">
+          {content.map((ele, i) => (
+            <Link key={i} to={`/${ele.id}`}>
+              <div to={`/${ele.id}`}>
+                <div>{ele.name}</div>
+              </div>
+            </Link>
+          ))}
+          <button
+            onClick={() => {
+              dispatch({ type: "NEXT_PAGE" });
+            }}
+          >
+            Load more
+          </button>
+        </Route>
+        <Route path="/:id">{params => <TravelInfo params={params} />}</Route>
+      </Router>
+    </Provider>
+  );
 };
 
 export default App;
