@@ -3,6 +3,8 @@ import * as R from "ramda";
 import { Provider } from "./context";
 import TravelInfo from "./pages/TravelInfo";
 import { Router, Route, Link } from "wouter";
+import { Card, Row, Col } from "react-bootstrap";
+import styled from "styled-components";
 const categories = [
   { id: 11, name: "養生溫泉", active: false },
   { id: 12, name: "單車遊蹤", active: false },
@@ -52,7 +54,7 @@ const App = () => {
       );
       const jsonObj = await result.json();
       const { data } = jsonObj;
-      // console.log("data", data);
+      console.log("data", data);
       if (!ignore) {
         setContent([...content, ...data]);
       }
@@ -70,13 +72,31 @@ const App = () => {
     <Provider value={globalState}>
       <Router>
         <Route path="/">
-          {content.map((ele, i) => (
-            <Link key={i} to={`/${ele.id}`}>
-              <div to={`/${ele.id}`}>
-                <div>{ele.name}</div>
-              </div>
-            </Link>
-          ))}
+          <Row>
+            {content.map((ele, i) => {
+              //prettier-ignore
+              const {id,name,name_zh,open_status,introduction,open_time,zipcode,distric,address,tel,fax,email,months,nlat,elong,official_site,facebook,ticket,remind,staytime,modified,url,category,target,service,friendly,images,files,links} = ele;
+
+              return (
+                <Col md={3}>
+                  <Link key={i} to={`/${id}`}>
+                    <CardImgWrapper>
+                      {images[0] ? (
+                        <Card.Img variant="top" src={images[0].src} />
+                      ) : null}
+                    </CardImgWrapper>
+
+                    {name || name_zh}
+                    <ul>
+                      <li>
+                        <span>{open_time}</span>
+                      </li>
+                    </ul>
+                  </Link>
+                </Col>
+              );
+            })}
+          </Row>
           <button
             onClick={() => {
               dispatch({ type: "NEXT_PAGE" });
