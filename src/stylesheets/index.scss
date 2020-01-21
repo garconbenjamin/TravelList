@@ -1,1 +1,22 @@
-@import "./../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "./_reset.css";
+* {
+  box-sizing: border-box;
+}
+
+a,
+a:active,
+a:visited {
+  color: #020475;
+  text-decoration: none;
+}
+@import "./travelInfo.scss";
+@import "./travelList.scss";
+@import "./swiper.css";
+header {
+  width: 100%;
+  padding: 20px 0;
+  font-size: 24px;
+  text-align: center;
+  background: #9dc1d7;
+  color: #fff;
+}

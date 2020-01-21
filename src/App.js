@@ -1,10 +1,9 @@
 import React, { useReducer, useEffect, useState } from "react";
-import * as R from "ramda";
 import { Provider } from "./context";
 import TravelInfo from "./pages/TravelInfo";
-import { Router, Route, Link } from "wouter";
-import { Card, Row, Col } from "react-bootstrap";
-import styled from "styled-components";
+import TravelList from "./pages/TravelList";
+import { Router, Route } from "wouter";
+
 const categories = [
   { id: 11, name: "養生溫泉", active: false },
   { id: 12, name: "單車遊蹤", active: false },
@@ -31,16 +30,24 @@ const todoReducer = (state, action) => {
     case "NEXT_PAGE":
       const newPage = currentPage + 1;
       return { ...state, currentPage: newPage };
+    case "REMOVE_LIKE":
+      const { id } = action.payload;
+      const newArr = likedSpot.filter(ele => ele.id !== id);
+      return { ...state, likedSpot: newArr };
     default:
       return state;
   }
 };
-
+const Header = props => {
+  const { text } = props;
+  return <header>{text}</header>;
+};
 const App = () => {
   const [state, dispatch] = useReducer(todoReducer, initState);
-  const { totalPage, currentPage, categories } = state;
+  const { totalPage, currentPage } = state;
   const [content, setContent] = useState([]);
-  const globalState = { state, dispatch, content };
+  const [isLoading, setIsLoading] = useState(false);
+  const globalState = { state, dispatch, content, isLoading };
   useEffect(() => {
     let ignore = false;
     const fetchData = async () => {
@@ -54,13 +61,20 @@ const App = () => {
       );
       const jsonObj = await result.json();
       const { data } = jsonObj;
-      console.log("data", data);
+
       if (!ignore) {
         setContent([...content, ...data]);
       }
     };
     if (currentPage > totalPage) {
-      fetchData();
+      setIsLoading(true);
+
+      setTimeout(() => {
+        fetchData();
+      }, 1500);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
 
     return () => {
@@ -72,38 +86,8 @@ const App = () => {
     <Provider value={globalState}>
       <Router>
         <Route path="/">
-          <Row>
-            {content.map((ele, i) => {
-              //prettier-ignore
-              const {id,name,name_zh,open_status,introduction,open_time,zipcode,distric,address,tel,fax,email,months,nlat,elong,official_site,facebook,ticket,remind,staytime,modified,url,category,target,service,friendly,images,files,links} = ele;
-
-              return (
-                <Col md={3}>
-                  <Link key={i} to={`/${id}`}>
-                    <CardImgWrapper>
-                      {images[0] ? (
-                        <Card.Img variant="top" src={images[0].src} />
-                      ) : null}
-                    </CardImgWrapper>
-
-                    {name || name_zh}
-                    <ul>
-                      <li>
-                        <span>{open_time}</span>
-                      </li>
-                    </ul>
-                  </Link>
-                </Col>
-              );
-            })}
-          </Row>
-          <button
-            onClick={() => {
-              dispatch({ type: "NEXT_PAGE" });
-            }}
-          >
-            Load more
-          </button>
+          <Header text="台北市特色景點" />
+          <TravelList />
         </Route>
         <Route path="/:id">{params => <TravelInfo params={params} />}</Route>
       </Router>
