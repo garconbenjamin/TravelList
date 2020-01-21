@@ -84,14 +84,13 @@ const App = () => {
 
   return (
     <Provider value={globalState}>
-      <TravelList />
-      {/* <Router basename={process.env.PUBLIC_URL}>
+      <Router base={process.env.PUBLIC_URL}>
         <Route path="/">
           <Header text="台北市特色景點" />
           <TravelList />
         </Route>
         <Route path="/:id">{params => <TravelInfo params={params} />}</Route>
-      </Router> */}
+      </Router>
     </Provider>
   );
 };
