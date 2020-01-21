@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/TravelList/static/css/main.c88ddca0.chunk.css",
-    "main.js": "/TravelList/static/js/main.931dbe26.chunk.js",
-    "main.js.map": "/TravelList/static/js/main.931dbe26.chunk.js.map",
+    "main.css": "/TravelList/static/css/main.9598e327.chunk.css",
+    "main.js": "/TravelList/static/js/main.261c642e.chunk.js",
+    "main.js.map": "/TravelList/static/js/main.261c642e.chunk.js.map",
     "runtime-main.js": "/TravelList/static/js/runtime-main.95272428.js",
     "runtime-main.js.map": "/TravelList/static/js/runtime-main.95272428.js.map",
     "static/js/2.5d3d466f.chunk.js": "/TravelList/static/js/2.5d3d466f.chunk.js",
     "static/js/2.5d3d466f.chunk.js.map": "/TravelList/static/js/2.5d3d466f.chunk.js.map",
     "index.html": "/TravelList/index.html",
-    "precache-manifest.35cdc6e1a40cc9de43a9e91210033918.js": "/TravelList/precache-manifest.35cdc6e1a40cc9de43a9e91210033918.js",
+    "precache-manifest.d375b674e65cd000c8b59862c5fddc45.js": "/TravelList/precache-manifest.d375b674e65cd000c8b59862c5fddc45.js",
     "service-worker.js": "/TravelList/service-worker.js",
-    "static/css/main.c88ddca0.chunk.css.map": "/TravelList/static/css/main.c88ddca0.chunk.css.map",
+    "static/css/main.9598e327.chunk.css.map": "/TravelList/static/css/main.9598e327.chunk.css.map",
     "static/js/2.5d3d466f.chunk.js.LICENSE": "/TravelList/static/js/2.5d3d466f.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.95272428.js",
     "static/js/2.5d3d466f.chunk.js",
-    "static/css/main.c88ddca0.chunk.css",
-    "static/js/main.931dbe26.chunk.js"
+    "static/css/main.9598e327.chunk.css",
+    "static/js/main.261c642e.chunk.js"
   ]
 }
