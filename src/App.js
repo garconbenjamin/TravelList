@@ -84,7 +84,7 @@ const App = () => {
 
   return (
     <Provider value={globalState}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Route path="/">
           <Header text="台北市特色景點" />
           <TravelList />
