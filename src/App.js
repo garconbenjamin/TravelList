@@ -89,7 +89,9 @@ const App = () => {
           <Header text="台北市特色景點" />
           <TravelList />
         </Route>
-        <Route path="/:id">{params => <TravelInfo params={params} />}</Route>
+        <Route exact path="/:id">
+          {params => <TravelInfo params={params} />}
+        </Route>
       </Router>
     </Provider>
   );

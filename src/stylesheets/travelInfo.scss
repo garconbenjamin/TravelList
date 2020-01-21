@@ -75,7 +75,7 @@ $phone-media: 630px;
           );
         }
         &.open {
-          max-height: 1000px;
+          max-height: 10000px;
           &:after {
             opacity: 0;
           }
@@ -113,6 +113,7 @@ $phone-media: 630px;
             margin-right: 10px;
           }
           .info {
+            line-height: 1.5;
             flex-grow: 1;
           }
         }
