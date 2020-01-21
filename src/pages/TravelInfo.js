@@ -37,8 +37,8 @@ const TravelInfo = props => {
             const {name,introduction,open_time,address,tel,email,months,nlat,elong,official_site,ticket,remind,target,service,images} = dataInfo;
             const geoPostion = [nlat, elong];
             const monthsArr = months.split(",");
-            const introWithSpace = introduction.replace(/\r\n/g, "<br/>");
-            const remindWithSpace = remind.replace(/\r\n/g, "<br/>");
+
+            const spacing = text => text.replace(/\r\n/g, "<br/>");
             const monthText =
               monthsArr.length === 12
                 ? "全年無休"
@@ -46,7 +46,7 @@ const TravelInfo = props => {
                     .sort((a, b) => a - b)
                     .map((m, idx) => monthsToZh[+m] + "月")
                     .join(" / ");
-            console.log(introduction);
+
             return (
               <div id="travel-info">
                 <Swiper
@@ -74,7 +74,9 @@ const TravelInfo = props => {
                   {introduction ? (
                     <div className="intro">
                       <div
-                        dangerouslySetInnerHTML={{ __html: introWithSpace }}
+                        dangerouslySetInnerHTML={{
+                          __html: spacing(introduction)
+                        }}
                         className={`text-area ${introOpen ? "open" : ""}`}
                       />
                       <div>
@@ -101,7 +103,12 @@ const TravelInfo = props => {
                       {open_time ? (
                         <li>
                           <span className="info-type">開放時間</span>
-                          <span className="info">{open_time}</span>
+                          <span
+                            className="info"
+                            dangerouslySetInnerHTML={{
+                              __html: spacing(open_time)
+                            }}
+                          />
                         </li>
                       ) : null}
                       {email ? (
@@ -119,7 +126,12 @@ const TravelInfo = props => {
                       {ticket ? (
                         <li>
                           <span className="info-type">門票資訊</span>
-                          <span className="info">{ticket}</span>
+                          <span
+                            className="info"
+                            dangerouslySetInnerHTML={{
+                              __html: spacing(ticket)
+                            }}
+                          />
                         </li>
                       ) : null}
                       {remind ? (
@@ -128,7 +140,7 @@ const TravelInfo = props => {
                           <span
                             className="info"
                             dangerouslySetInnerHTML={{
-                              __html: remindWithSpace
+                              __html: spacing(remind)
                             }}
                           />
                         </li>
